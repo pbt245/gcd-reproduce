@@ -1,12 +1,12 @@
-PYTHON='/users/sagar/miniconda3/envs/open_world_prototype/bin/python'
+PYTHON='/home/pbt245/miniconda3/envs/gcd/bin/python'
 
-hostname
+# hostname
 nvidia-smi
 
 export CUDA_VISIBLE_DEVICES=0
 
 # Get unique log file,
-SAVE_DIR=/work/sagar/osr_novel_categories/dev_outputs/
+SAVE_DIR=~/D:/generalized-category-discovery/outputs/
 
 EXP_NUM=$(ls ${SAVE_DIR} | wc -l)
 EXP_NUM=$((${EXP_NUM}+1))

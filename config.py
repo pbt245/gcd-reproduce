@@ -1,19 +1,25 @@
+import os
+
 # -----------------
 # DATASET ROOTS
 # -----------------
-cifar_10_root = '/work/sagar/datasets/cifar10'
-cifar_100_root = '/work/sagar/datasets/cifar100'
-cub_root = '/work/sagar/datasets/CUB'
-aircraft_root = '/work/khan/datasets/aircraft/fgvc-aircraft-2013b'
-herbarium_dataroot = '/work/sagar/datasets/herbarium_19/'
-imagenet_root = '/scratch/shared/beegfs/shared-datasets/ImageNet/ILSVRC12'
+
+BASE_DATA_PATH = './data'
+
+cifar_10_root = os.path.join(BASE_DATA_PATH, 'cifar10')
+cifar_100_root = os.path.join(BASE_DATA_PATH, 'cifar100')
+cub_root = os.path.join(BASE_DATA_PATH, 'CUB')
+aircraft_root = os.path.join(BASE_DATA_PATH, 'aircraft')
+herbarium_dataroot = os.path.join(BASE_DATA_PATH, 'herbarium_19')
+imagenet_root = os.path.join(BASE_DATA_PATH, 'imagenet')
 
 # OSR Split dir
-osr_split_dir = '/users/sagar/kai_collab/osr_novel_categories/data/ssb_splits'
+osr_split_dir = os.path.join(BASE_DATA_PATH, 'ssb_splits')
 
 # -----------------
 # OTHER PATHS
 # -----------------
-dino_pretrain_path = '/work/sagar/pretrained_models/dino/dino_vitbase16_pretrain.pth'
-feature_extract_dir = '/work/sagar/osr_novel_categories/extracted_features_public_impl'     # Extract features to this directory
-exp_root = '/work/sagar/osr_novel_categories/'          # All logs and checkpoints will be saved here
+exp_root = '/home/pbt245/D:/generalized-category-discovery/outputs'
+feature_extract_dir = '/home/pbt245/D:/generalized-category-discovery/features'
+dino_pretrain_path = '/home/pbt245/D:/generalized-category-discovery/dino/dino_vitbase16_pretrain.pth'
+scars_root = '/home/pbt245/datasets/stanford_car'

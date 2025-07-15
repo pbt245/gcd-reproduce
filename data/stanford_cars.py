@@ -9,8 +9,10 @@ from torch.utils.data import Dataset
 
 from data.data_utils import subsample_instances
 
-car_root = "/work/sagar/datasets/stanford_car/cars_{}/"
-meta_default_path = "/work/sagar/datasets/stanford_car/devkit/cars_{}.mat"
+from config import scars_root
+
+car_root = scars_root
+meta_default_path = os.path.join(car_root, 'devkit', 'cars_train_annos.mat')
 
 class CarsDataset(Dataset):
     """
@@ -18,7 +20,7 @@ class CarsDataset(Dataset):
     """
     def __init__(self, train=True, limit=0, data_dir=car_root, transform=None, metas=meta_default_path):
 
-        data_dir = data_dir.format('train') if train else data_dir.format('test')
+        data_dir = os.path.join(data_dir, 'cars_train' if train else 'cars_test')
         metas = metas.format('train_annos') if train else metas.format('test_annos_withlabels')
 
         self.loader = default_loader
@@ -39,7 +41,7 @@ class CarsDataset(Dataset):
                     break
 
             # self.data.append(img_resized)
-            self.data.append(data_dir + img_[5][0])
+            self.data.append(img_[5][0])
             # if self.mode == 'train':
             self.target.append(img_[4][0][0])
 
@@ -47,9 +49,12 @@ class CarsDataset(Dataset):
         self.target_transform = None
 
     def __getitem__(self, idx):
+        print("DEBUG: self.data[idx] =", self.data[idx])
+        img_path = os.path.join(self.data_dir, self.data[idx])
 
-        image = self.loader(self.data[idx])
-        target = self.target[idx] - 1
+        image = self.loader(img_path)
+        target = self.target[idx]
+
 
         if self.transform is not None:
             image = self.transform(image)
@@ -78,11 +83,15 @@ def subsample_classes(dataset, include_classes=range(160)):
 
     include_classes_cars = np.array(include_classes) + 1     # SCars classes are indexed 1 --> 196 instead of 0 --> 195
     cls_idxs = [x for x, t in enumerate(dataset.target) if t in include_classes_cars]
+    if len(cls_idxs) == 0:
+        raise ValueError(f"[ERROR] subsample_classes: Không có class nào trong include_classes ({include_classes}) tồn tại trong dataset.target (ví dụ: {set(dataset.target)}). Hãy kiểm tra lại range.")
 
     target_xform_dict = {}
-    for i, k in enumerate(include_classes):
+    for i, k in enumerate(include_classes_cars):
         target_xform_dict[k] = i
-
+    
+    dataset.target_transform = lambda x: target_xform_dict[x]
+    
     dataset = subsample_dataset(dataset, cls_idxs)
 
     # dataset.target_transform = lambda x: target_xform_dict[x]

@@ -25,6 +25,7 @@ from config import exp_root, dino_pretrain_path
 import warnings
 warnings.filterwarnings("ignore", category=DeprecationWarning)
 
+device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
 class SupConLoss(torch.nn.Module):
     """Supervised Contrastive Learning: https://arxiv.org/pdf/2004.11362.pdf.
@@ -448,8 +449,8 @@ if __name__ == "__main__":
     # --------------------
     # DATALOADERS
     # --------------------
-    train_loader = DataLoader(train_dataset, num_workers=args.num_workers, batch_size=args.batch_size, shuffle=False,
-                              sampler=sampler, drop_last=True)
+    train_loader = DataLoader(train_dataset, num_workers=args.num_workers, batch_size=args.batch_size,
+                          shuffle=False, sampler=sampler, drop_last=True, pin_memory=True)
     test_loader_unlabelled = DataLoader(unlabelled_train_examples_test, num_workers=args.num_workers,
                                         batch_size=args.batch_size, shuffle=False)
     test_loader_labelled = DataLoader(test_dataset, num_workers=args.num_workers,

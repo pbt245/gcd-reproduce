@@ -19,6 +19,7 @@ import pickle
 import os
 
 from config import osr_split_dir
+from config import scars_root
 
 sub_sample_class_funcs = {
     'cifar10': subsample_dataset_cifar,
@@ -65,7 +66,7 @@ def get_datasets(dataset_name, train_transform, test_transform, args):
     target_transform_dict = {}
     for i, cls in enumerate(list(args.train_classes) + list(args.unlabeled_classes)):
         target_transform_dict[cls] = i
-    target_transform = lambda x: target_transform_dict[x]
+    target_transform = lambda x: target_transform_dict.get(x, -1)
 
     for dataset_name, dataset in datasets.items():
         if dataset is not None:

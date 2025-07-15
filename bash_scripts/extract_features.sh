@@ -1,4 +1,4 @@
-PYTHON='/users/sagar/miniconda3/envs/open_world_prototype/bin/python'
+PYTHON='~/miniconda3/envs/gcd/bin/python'
 
 hostname
 nvidia-smi
